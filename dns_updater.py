@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
+from urllib2 import urlopen
 import socket
 import boto3
 import os
 
 HOME = os.getenv("HOME")
 
-# Function to update .jackhil.de subdomains 
+# Function to update .jackhil.de subdomains
 # subdomain must be full domain name (ie `books.jackhil.de`)
 # ip can be more than one ip. comma seperated but don't?
 def update_dns(subdomain, ip):
@@ -36,11 +37,7 @@ def update_dns(subdomain, ip):
 # Function to display hostname and
 # IP address
 def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip_address = s.getsockname()[0]
-    print('IP reported from google \'{}\'.'.format(ip_address))
-    s.close()
+    my_ip = urlopen('http://ip.42.pl/raw').read()
     current_ip = "127.0.0.1"
     try:
         current_file = open(HOME + '/.config/dns-update/current_address','r')
@@ -65,17 +62,16 @@ def save_ip(ip_address):
 def main():
     config = open(HOME + '/.config/dns-update/config', 'r')
     ip = get_ip()
-    
+
     if ip is not 'null':
         for domain in config:
             print('Updating {} with new IP {}.'.format(domain.strip(), ip))
             update_dns(domain.strip(), ip)
         save_ip(ip)
     else:
-        print('No need to update. Bailling.') 
+        print('No need to update. Bailling.')
     config.close()
 
 
 if __name__ == '__main__':
     main()
-
