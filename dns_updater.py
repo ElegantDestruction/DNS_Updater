@@ -37,7 +37,7 @@ def update_dns(subdomain, ip):
 # Function to display hostname and
 # IP address
 def get_ip():
-    my_ip = urlopen('http://ip.42.pl/raw').read()
+    ip_address = urlopen('http://ip.42.pl/raw').read()
     current_ip = "127.0.0.1"
     try:
         current_file = open(HOME + '/.config/dns-update/current_address','r')
