@@ -17,6 +17,7 @@ HOME = os.getenv("HOME")
 # ip can be more than one ip. comma seperated but don't?
 def update_dns(subdomain, ip):
   client = boto3.client('route53')
+  print(ip)
   response = client.change_resource_record_sets(
       HostedZoneId='Z3MDEXKPR2M7K7',
       ChangeBatch={
@@ -42,7 +43,7 @@ def update_dns(subdomain, ip):
 # Function to display hostname and
 # IP address
 def get_ip():
-    ip_address = urlopen('http://ip.42.pl/raw').read()
+    ip_address = str(urlopen('http://ip.42.pl/raw').read()).replace("'", '').replace('b','')
     current_ip = "127.0.0.1"
     try:
         current_file = open(HOME + '/.config/dns-update/current_address','r')
