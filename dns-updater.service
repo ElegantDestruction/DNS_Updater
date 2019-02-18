@@ -1,0 +1,10 @@
+[Unit]
+Description=Run dns_updater daily and on boot
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1d
+
+[Install]
+WantedBy=timers.target
+WantedBy=network-online.target

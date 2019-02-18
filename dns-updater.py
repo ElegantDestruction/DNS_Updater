@@ -10,8 +10,6 @@ import socket
 import boto3
 import os
 
-HOME = os.getenv("HOME")
-
 # Function to update .jackhil.de subdomains
 # subdomain must be full domain name (ie `books.jackhil.de`)
 # ip can be more than one ip. comma seperated but don't?
@@ -46,7 +44,7 @@ def get_ip():
     ip_address = str(urlopen('http://ip.42.pl/raw').read()).replace("'", '').replace('b','')
     current_ip = "127.0.0.1"
     try:
-        current_file = open(HOME + '/.config/dns-update/current_address','r')
+        current_file = open('/var/lib/dns-update/current_address','r')
         current_ip = current_file.read()
         current_ip = current_ip.strip()
         current_file.close()
@@ -60,13 +58,13 @@ def get_ip():
 
 
 def save_ip(ip_address):
-    overwrite = open(HOME + '/.config/dns-update/current_address','w')
+    overwrite = open('/var/lib/dns-update/current_address','w')
     overwrite.write(ip_address)
     overwrite.close()
 
 
 def main():
-    config = open(HOME + '/.config/dns-update/config', 'r')
+    config = open('/etc/dns-update/config', 'r')
     ip = get_ip()
 
     if ip is not 'null':
