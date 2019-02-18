@@ -1,15 +1,29 @@
-
 pipeline {
     agent any
-    stages(){
+
+    stages {
         stage('Prep'){
             steps{
                 echo "Prep"
             }
         }
         stage('Build'){
-            steps {
-                echo "Build"
+            parallel {
+                stage('Deb') {
+                    steps {
+                        echo "deb done"
+                    }
+                }
+                stage('Raspberry Deb') {
+                    steps {
+                        echo "heck"
+                    }
+                }
+                stage('Arch') {
+                    steps {
+                        echo "Fuck this"
+                    }
+                }
             }
         }
         stage('Deploy'){
